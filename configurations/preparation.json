@@ -1,0 +1,94 @@
+{
+  "source_notebook": "emnlp.ipynb",
+  "source_cells_one_based": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "redaction": {
+    "engine": "Presidio",
+    "language": "en",
+    "entities": [
+      "PHONE_NUMBER",
+      "EMAIL_ADDRESS",
+      "PERSON",
+      "URL"
+    ],
+    "additional_pre_generation_name_replacement": "Case-sensitive literal name-component replacement.",
+    "later_regex_cleanup_cells": [
+      8,
+      9
+    ]
+  },
+  "narrative_generation": {
+    "model": "gpt-3.5-turbo-0125",
+    "max_tokens": 500,
+    "variants_per_group": 3,
+    "column_slices_zero_based_half_open": {
+      "academic": [
+        2,
+        19
+      ],
+      "professional": [
+        19,
+        35
+      ],
+      "innovation": [
+        35,
+        41
+      ],
+      "entrepreneurship": [
+        41,
+        76
+      ],
+      "motivation": [
+        76,
+        100
+      ],
+      "cv": [
+        112,
+        113
+      ]
+    },
+    "unused_additional_information_slice": [
+      100,
+      101
+    ]
+  },
+  "expected_master_identifier_positions_zero_based": {
+    "id": 0,
+    "Full name": 101,
+    "E-mail address": 102,
+    "LinkedIn profile page": 103,
+    "Network ID": 110,
+    "cv_text": 112
+  },
+  "rejected_answers": {
+    "model": "gpt-3.5-turbo",
+    "temperature": 0.8,
+    "max_tokens": 500,
+    "unused_function_retained": "replace_yes_with_no"
+  },
+  "instruction_construction": {
+    "cv_variants": 3,
+    "context_variants": 9,
+    "answer_variants": 3,
+    "tasks": 2,
+    "rows_per_respondent": 162,
+    "question_endings": [
+      "Did this professional engage in any innovative activities? Was he or she responsible for any innovation?",
+      "Did this professional engage in any entrepreneurial activities? Was he or she an entrepreneur?"
+    ]
+  },
+  "upstream_90_10_split_creation_included": false,
+  "release_guards_not_claimed_as_historical": [
+    "CAEE_ALLOW_EXTERNAL_PREPARATION=1",
+    "CAEE_PREPARATION_INPUTS_REVIEWED=1",
+    "OPENAI_API_KEY",
+    "Master schema validation"
+  ],
+  "full_execution_tested": false
+}
