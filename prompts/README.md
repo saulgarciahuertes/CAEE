@@ -6,4 +6,6 @@
 
 The inference notebook retains the original generic career-trajectory system instruction and plain system/user/assistant formatting. No participant-specific prompt instances are included.
 
-The original data-augmentation and rejected-answer-generation request templates were not recovered. They have not been reconstructed or presented as original prompts in this repository.
+`preparation_prompts.json` contains the recovered original academic, professional, innovation, entrepreneurship, motivation, and CV prompts, the three narrative-style suffixes, both system messages, and the contrasting-answer prompt prefix from `emnlp.ipynb`. They are generic templates only, not participant-specific request instances. The corresponding models/settings and positional field slices are in `configurations/preparation.json`.
+
+The narrative omission instruction applies to institution/company names in the output. It does not redact those strings before they are sent. The original upstream 90/10 split code and complete historical API request logs remain unrecovered.
