@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import re
 from types import SimpleNamespace
+import unicodedata
 import unittest
 
 
@@ -37,9 +38,11 @@ class ReleaseChecks(unittest.TestCase):
         cls.notebooks = sorted((ROOT / "notebooks").rglob("*.ipynb"))
         cls.gpt_source = notebook_code(ROOT / "notebooks/evaluation/Evaluation_GEval_GPT_256.ipynb")
         cls.inference_source = notebook_code(ROOT / "notebooks/inference/Inference_Comparison_1024.ipynb")
+        preparation = json.loads((ROOT / "notebooks/preparation/Preparation_Augmentation_ORPO.ipynb").read_text())
+        cls.preparation_cells = ["".join(cell["source"]) for cell in preparation["cells"] if cell["cell_type"] == "code"]
 
     def test_expected_notebook_scope(self):
-        self.assertEqual(len(self.notebooks), 7)
+        self.assertEqual(len(self.notebooks), 8)
         self.assertEqual(len(list((ROOT / "notebooks/training").glob("*.ipynb"))), 4)
         self.assertFalse((ROOT / "notebooks/experimental").exists())
 
@@ -155,9 +158,133 @@ class ReleaseChecks(unittest.TestCase):
 
     def test_provenance_has_only_reported_workflow_notebooks(self):
         provenance = json.loads((ROOT / "PROVENANCE.json").read_text())
-        self.assertEqual(len(provenance["notebooks"]), 7)
+        self.assertEqual(len(provenance["notebooks"]), 8)
         self.assertTrue(all(re.fullmatch(r"[a-f0-9]{64}", entry["source_sha256"]) for entry in provenance["notebooks"]))
         self.assertTrue(all((ROOT / entry["release_notebook"]).is_file() for entry in provenance["notebooks"]))
+
+    def test_preparation_api_guards_with_stub_client(self):
+        calls = []
+
+        def create_client(**kwargs):
+            calls.append(kwargs)
+            return "synthetic client"
+
+        environments = [{}, {"CAEE_ALLOW_EXTERNAL_PREPARATION": "1"},
+                        {"CAEE_ALLOW_EXTERNAL_PREPARATION": "1", "CAEE_PREPARATION_INPUTS_REVIEWED": "1"}]
+        for environment in environments:
+            factory = isolated_functions(self.preparation_cells[0], ["preparation_client"],
+                                         {"os": SimpleNamespace(environ=environment), "OpenAI": create_client})["preparation_client"]
+            with self.assertRaises(RuntimeError):
+                factory()
+        self.assertEqual(calls, [])
+        environment = {"CAEE_ALLOW_EXTERNAL_PREPARATION": "1", "CAEE_PREPARATION_INPUTS_REVIEWED": "1", "OPENAI_API_KEY": "synthetic-test-value"}
+        factory = isolated_functions(self.preparation_cells[0], ["preparation_client"],
+                                     {"os": SimpleNamespace(environ=environment), "OpenAI": create_client})["preparation_client"]
+        self.assertEqual(factory(), "synthetic client")
+        self.assertEqual(len(calls), 1)
+        example = (ROOT / ".env.example").read_text()
+        self.assertIn("CAEE_ALLOW_EXTERNAL_PREPARATION=0", example)
+        self.assertIn("CAEE_PREPARATION_INPUTS_REVIEWED=0", example)
+        for cell in [self.preparation_cells[2], self.preparation_cells[4]]:
+            self.assertLess(cell.index("client = preparation_client()"), cell.index("client.chat.completions.create("))
+
+    def test_preparation_positional_schema_guard(self):
+        validate = isolated_functions(self.preparation_cells[0], ["validate_master_schema"])["validate_master_schema"]
+        columns = [f"synthetic field {index}" for index in range(113)]
+        configuration = json.loads((ROOT / "configurations/preparation.json").read_text())
+        for name, position in configuration["expected_master_identifier_positions_zero_based"].items():
+            columns[position] = name
+        validate(SimpleNamespace(columns=columns))
+        with self.assertRaises(ValueError):
+            validate(SimpleNamespace(columns=columns[1:]))
+        columns[112] = "synthetic unexpected field"
+        with self.assertRaises(ValueError):
+            validate(SimpleNamespace(columns=columns))
+
+    def test_preparation_presidio_configuration_with_stub_engines(self):
+        requests = []
+
+        def analyze(**kwargs):
+            requests.append(kwargs)
+            return ["synthetic entity"]
+
+        def anonymize(**kwargs):
+            self.assertEqual(kwargs["analyzer_results"], ["synthetic entity"])
+            return SimpleNamespace(text="synthetic redacted text")
+
+        scope = isolated_functions(self.preparation_cells[1], ["anonymize"], {
+            "AnalyzerEngine": lambda: SimpleNamespace(analyze=analyze),
+            "AnonymizerEngine": lambda: SimpleNamespace(anonymize=anonymize)})
+        self.assertEqual(scope["anonymize"]("synthetic\ntext"), "synthetic redacted text")
+        self.assertEqual(requests[0]["text"], "synthetic text")
+        self.assertEqual(requests[0]["entities"], ["PHONE_NUMBER", "EMAIL_ADDRESS", "PERSON", "URL"])
+        self.assertEqual(requests[0]["language"], "en")
+
+    def test_preparation_literal_name_behavior_retained(self):
+        replace = isolated_functions(self.preparation_cells[1], ["replace_names"])["replace_names"]
+        self.assertEqual(replace("Alice Example", "Alice Example"), "<NAME> <NAME>")
+        self.assertEqual(replace("ALICE EXAMPLE", "Alice Example"), "ALICE EXAMPLE")
+
+    def test_preparation_narrative_requests_match_prompt_fixture(self):
+        calls = []
+
+        def create(**kwargs):
+            calls.append(kwargs)
+            return SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(content="synthetic narrative"))])
+
+        client = SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=create)))
+        generate = isolated_functions(self.preparation_cells[2], ["generate_descriptions"],
+                                      {"pd": SimpleNamespace(notna=lambda value: value is not None)})["generate_descriptions"]
+        self.assertEqual(generate(["Synthetic University", None], ["Institution", "Omitted field"], "Synthetic task", client),
+                         ["synthetic narrative"] * 3)
+        prompts = json.loads((ROOT / "prompts/preparation_prompts.json").read_text())
+        self.assertEqual(len(calls), 3)
+        for call, suffix in zip(calls, prompts["style_suffixes"]):
+            self.assertEqual(call["model"], "gpt-3.5-turbo-0125")
+            self.assertEqual(call["max_tokens"], 500)
+            self.assertEqual(call["messages"][0]["content"], prompts["narrative_system_message"])
+            self.assertEqual(call["messages"][1]["content"], "Synthetic task" + suffix + ": Institution: Synthetic University")
+
+    def test_preparation_contrast_requests_and_unused_helper(self):
+        calls = []
+
+        def create(**kwargs):
+            calls.append(kwargs)
+            return SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(content="synthetic contrast"))])
+
+        client = SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=create)))
+        scope = isolated_functions(self.preparation_cells[4], ["generate_wrong_answer", "replace_yes_with_no"])
+        self.assertEqual(scope["generate_wrong_answer"]("synthetic preferred answer", client), "synthetic contrast")
+        prompts = json.loads((ROOT / "prompts/preparation_prompts.json").read_text())
+        self.assertEqual(calls[0]["messages"][1]["content"], prompts["rejected_answer_prompt_prefix"] + "synthetic preferred answer")
+        self.assertEqual(calls[0]["messages"][0]["content"], prompts["rejected_answer_system_message"])
+        self.assertEqual(calls[0]["model"], "gpt-3.5-turbo")
+        self.assertEqual(calls[0]["temperature"], 0.8)
+        self.assertEqual(calls[0]["max_tokens"], 500)
+        self.assertEqual(scope["replace_yes_with_no"]("Yes"), "No")
+        self.assertEqual(scope["replace_yes_with_no"]("No"), "")
+        tree = ast.parse(self.preparation_cells[4])
+        self.assertFalse(any(isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
+                             and node.func.id == "replace_yes_with_no" for node in ast.walk(tree)))
+
+    def test_preparation_instruction_combinations_and_cleanup_alternatives(self):
+        construct = isolated_functions(self.preparation_cells[3], ["create_instruction"])["create_instruction"]
+        self.assertEqual(construct({"cv": "synthetic CV", "context": "synthetic context", "answer": "synthetic answer"},
+                                   "cv", "context", "answer", "synthetic question"),
+                         ("synthetic CV", "synthetic context synthetic question", "synthetic answer"))
+        config = json.loads((ROOT / "configurations/preparation.json").read_text())
+        combinations = config["instruction_construction"]
+        self.assertEqual(combinations["cv_variants"] * combinations["context_variants"] * combinations["answer_variants"] * combinations["tasks"], 162)
+        self.assertIn('file_path = output_dir / "orpo_data.csv"', self.preparation_cells[5])
+        self.assertIn('orpo_data_path = output_dir / "orpo_data.csv"', self.preparation_cells[6])
+        self.assertNotIn("train_test_split(", "\n".join(self.preparation_cells))
+
+    def test_preparation_placeholder_mismatch_is_retained_not_hidden(self):
+        scope = isolated_functions(self.preparation_cells[6], ["remove_accents", "clean_text"], {
+            "unicodedata": unicodedata, "pd": SimpleNamespace(isna=lambda value: False),
+            "phone_remove_counter": 0, "email_remove_counter": 0, "url_remove_counter": 0})
+        self.assertEqual(scope["clean_text"]("synthetic <PHONE_NUMBER>"), "synthetic <PHONE_NUMBER>")
+        self.assertEqual(scope["clean_text"]("synthetic <EMAIL_ADDRESS>"), "synthetic ")
 
     def test_manifest_matches_files(self):
         manifest = json.loads((ROOT / "MANIFEST.json").read_text())
