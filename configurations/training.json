@@ -1,0 +1,242 @@
+[
+  {
+    "source_notebook": "JP1_ORPO_Training_4096.ipynb",
+    "release_notebook": "notebooks/training/ORPO_Training_4096.ipynb",
+    "selected_rows_before_internal_split": 4096,
+    "training_base_model": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "original_output_model_name": "ie_Llama-3-8B",
+    "source_dataset_split_loaded": "train",
+    "shuffle_seed": 42,
+    "internal_validation_fraction": 0.01,
+    "internal_split_seed": null,
+    "internal_split_seed_note": "No explicit seed is passed to train_test_split in the supplied code.",
+    "expected_internal_validation_rows": 41,
+    "expected_internal_training_rows": 4055,
+    "orpo": {
+      "learning_rate": 8e-06,
+      "beta": 0.1,
+      "lr_scheduler_type": "linear",
+      "max_length": 1024,
+      "max_prompt_length": 512,
+      "per_device_train_batch_size": 2,
+      "per_device_eval_batch_size": 2,
+      "gradient_accumulation_steps": 4,
+      "optim": "paged_adamw_8bit",
+      "num_train_epochs": 1,
+      "evaluation_strategy": "steps",
+      "eval_steps": 0.2,
+      "logging_steps": 1,
+      "warmup_steps": 10,
+      "report_to": "wandb",
+      "output_dir": "./results/"
+    },
+    "lora": {
+      "r": 16,
+      "lora_alpha": 32,
+      "lora_dropout": 0.05,
+      "bias": "none",
+      "task_type": "CAUSAL_LM",
+      "target_modules": [
+        "up_proj",
+        "down_proj",
+        "gate_proj",
+        "k_proj",
+        "q_proj",
+        "v_proj",
+        "o_proj"
+      ]
+    },
+    "quantization": {
+      "load_in_4bit": true,
+      "bnb_4bit_quant_type": "nf4",
+      "bnb_4bit_compute_dtype": {
+        "expression": "torch_dtype"
+      },
+      "bnb_4bit_use_double_quant": true
+    },
+    "dtype_and_attention": "bfloat16 and flash_attention_2 when CUDA compute capability major >= 8; float16 and eager otherwise",
+    "record_type": "Settings extracted from the supplied notebook source, not a recovered complete runtime environment.",
+    "untuned_evaluation_baseline": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "final_evaluation_dataset": "First 1024 rows of the pre-existing test partition; 256 comparison rows sampled with random_state=42."
+  },
+  {
+    "source_notebook": "JP1_ORPO_Training_4096x1_25.ipynb",
+    "release_notebook": "notebooks/training/ORPO_Training_5120.ipynb",
+    "selected_rows_before_internal_split": 5120,
+    "training_base_model": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "original_output_model_name": "ie_Llama-3-8B_4096x1-25",
+    "source_dataset_split_loaded": "train",
+    "shuffle_seed": 42,
+    "internal_validation_fraction": 0.01,
+    "internal_split_seed": null,
+    "internal_split_seed_note": "No explicit seed is passed to train_test_split in the supplied code.",
+    "expected_internal_validation_rows": 52,
+    "expected_internal_training_rows": 5068,
+    "orpo": {
+      "learning_rate": 8e-06,
+      "beta": 0.1,
+      "lr_scheduler_type": "linear",
+      "max_length": 1024,
+      "max_prompt_length": 512,
+      "per_device_train_batch_size": 2,
+      "per_device_eval_batch_size": 2,
+      "gradient_accumulation_steps": 4,
+      "optim": "paged_adamw_8bit",
+      "num_train_epochs": 1,
+      "evaluation_strategy": "steps",
+      "eval_steps": 0.2,
+      "logging_steps": 1,
+      "warmup_steps": 10,
+      "report_to": "wandb",
+      "output_dir": "./results/"
+    },
+    "lora": {
+      "r": 16,
+      "lora_alpha": 32,
+      "lora_dropout": 0.05,
+      "bias": "none",
+      "task_type": "CAUSAL_LM",
+      "target_modules": [
+        "up_proj",
+        "down_proj",
+        "gate_proj",
+        "k_proj",
+        "q_proj",
+        "v_proj",
+        "o_proj"
+      ]
+    },
+    "quantization": {
+      "load_in_4bit": true,
+      "bnb_4bit_quant_type": "nf4",
+      "bnb_4bit_compute_dtype": {
+        "expression": "torch_dtype"
+      },
+      "bnb_4bit_use_double_quant": true
+    },
+    "dtype_and_attention": "bfloat16 and flash_attention_2 when CUDA compute capability major >= 8; float16 and eager otherwise",
+    "record_type": "Settings extracted from the supplied notebook source, not a recovered complete runtime environment.",
+    "untuned_evaluation_baseline": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "final_evaluation_dataset": "First 1024 rows of the pre-existing test partition; 256 comparison rows sampled with random_state=42."
+  },
+  {
+    "source_notebook": "JP1_ORPO_Training_4096x1_5.ipynb",
+    "release_notebook": "notebooks/training/ORPO_Training_6144.ipynb",
+    "selected_rows_before_internal_split": 6144,
+    "training_base_model": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "original_output_model_name": "ie_Llama-3-8B_4096x1.5",
+    "source_dataset_split_loaded": "train",
+    "shuffle_seed": 42,
+    "internal_validation_fraction": 0.01,
+    "internal_split_seed": null,
+    "internal_split_seed_note": "No explicit seed is passed to train_test_split in the supplied code.",
+    "expected_internal_validation_rows": 62,
+    "expected_internal_training_rows": 6082,
+    "orpo": {
+      "learning_rate": 8e-06,
+      "beta": 0.1,
+      "lr_scheduler_type": "linear",
+      "max_length": 1024,
+      "max_prompt_length": 512,
+      "per_device_train_batch_size": 2,
+      "per_device_eval_batch_size": 2,
+      "gradient_accumulation_steps": 4,
+      "optim": "paged_adamw_8bit",
+      "num_train_epochs": 1,
+      "evaluation_strategy": "steps",
+      "eval_steps": 0.2,
+      "logging_steps": 1,
+      "warmup_steps": 10,
+      "report_to": "wandb",
+      "output_dir": "./results/"
+    },
+    "lora": {
+      "r": 16,
+      "lora_alpha": 32,
+      "lora_dropout": 0.05,
+      "bias": "none",
+      "task_type": "CAUSAL_LM",
+      "target_modules": [
+        "up_proj",
+        "down_proj",
+        "gate_proj",
+        "k_proj",
+        "q_proj",
+        "v_proj",
+        "o_proj"
+      ]
+    },
+    "quantization": {
+      "load_in_4bit": true,
+      "bnb_4bit_quant_type": "nf4",
+      "bnb_4bit_compute_dtype": {
+        "expression": "torch_dtype"
+      },
+      "bnb_4bit_use_double_quant": true
+    },
+    "dtype_and_attention": "bfloat16 and flash_attention_2 when CUDA compute capability major >= 8; float16 and eager otherwise",
+    "record_type": "Settings extracted from the supplied notebook source, not a recovered complete runtime environment.",
+    "untuned_evaluation_baseline": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "final_evaluation_dataset": "First 1024 rows of the pre-existing test partition; 256 comparison rows sampled with random_state=42."
+  },
+  {
+    "source_notebook": "JP1_ORPO_Training_4096x1_75.ipynb",
+    "release_notebook": "notebooks/training/ORPO_Training_7168.ipynb",
+    "selected_rows_before_internal_split": 7168,
+    "training_base_model": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "original_output_model_name": "ie_Llama-3-8B_4096x1-75",
+    "source_dataset_split_loaded": "train",
+    "shuffle_seed": 42,
+    "internal_validation_fraction": 0.01,
+    "internal_split_seed": null,
+    "internal_split_seed_note": "No explicit seed is passed to train_test_split in the supplied code.",
+    "expected_internal_validation_rows": 72,
+    "expected_internal_training_rows": 7096,
+    "orpo": {
+      "learning_rate": 8e-06,
+      "beta": 0.1,
+      "lr_scheduler_type": "linear",
+      "max_length": 1024,
+      "max_prompt_length": 512,
+      "per_device_train_batch_size": 2,
+      "per_device_eval_batch_size": 2,
+      "gradient_accumulation_steps": 4,
+      "optim": "paged_adamw_8bit",
+      "num_train_epochs": 1,
+      "evaluation_strategy": "steps",
+      "eval_steps": 0.2,
+      "logging_steps": 1,
+      "warmup_steps": 10,
+      "report_to": "wandb",
+      "output_dir": "./results/"
+    },
+    "lora": {
+      "r": 16,
+      "lora_alpha": 32,
+      "lora_dropout": 0.05,
+      "bias": "none",
+      "task_type": "CAUSAL_LM",
+      "target_modules": [
+        "up_proj",
+        "down_proj",
+        "gate_proj",
+        "k_proj",
+        "q_proj",
+        "v_proj",
+        "o_proj"
+      ]
+    },
+    "quantization": {
+      "load_in_4bit": true,
+      "bnb_4bit_quant_type": "nf4",
+      "bnb_4bit_compute_dtype": {
+        "expression": "torch_dtype"
+      },
+      "bnb_4bit_use_double_quant": true
+    },
+    "dtype_and_attention": "bfloat16 and flash_attention_2 when CUDA compute capability major >= 8; float16 and eager otherwise",
+    "record_type": "Settings extracted from the supplied notebook source, not a recovered complete runtime environment.",
+    "untuned_evaluation_baseline": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "final_evaluation_dataset": "First 1024 rows of the pre-existing test partition; 256 comparison rows sampled with random_state=42."
+  }
+]

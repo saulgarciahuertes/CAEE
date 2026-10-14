@@ -1,0 +1,75 @@
+[
+  {
+    "source_notebook": "JP1_Model_Evaluation_N_models_SemScore.ipynb",
+    "release_notebook": "notebooks/evaluation/Evaluation_SemScore_256.ipynb",
+    "selected_rows": 256,
+    "sampling_random_state": 42,
+    "input": "Precomputed comparison CSV supplied through CAEE_EVALUATION_CSV.",
+    "required_columns": [
+      "question",
+      "expected_answer",
+      "parsed_answer_base",
+      "parsed_answer_4096",
+      "parsed_answer_4096x1-25",
+      "parsed_answer_4096x1-50",
+      "parsed_answer_4096x1-75"
+    ],
+    "answer_generation_base_model": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "answer_generation_model_mapping": "Four caller-supplied fine-tuned model locations mapped to the documented suffixes by the inference notebook.",
+    "test_split_origin": "Inference loads the pre-existing test partition and selects its first 1024 rows; the split-creation method and seed are unrecovered.",
+    "declared_requirements": "requirements/declared_evaluation_semscore.txt",
+    "execution_status": "Full notebook not executed during preparation.",
+    "embedding_model": "sentence-transformers/all-mpnet-base-v2",
+    "metric": "Cosine similarity of paired reference and generated-answer embeddings.",
+    "aggregation": "Arithmetic mean over the selected rows for each model suffix.",
+    "supplied_comparison_rows": 1024
+  },
+  {
+    "source_notebook": "JP1_Model_Evaluation_N_models_G_Eval_OAI.ipynb",
+    "release_notebook": "notebooks/evaluation/Evaluation_GEval_GPT_256.ipynb",
+    "selected_rows": 256,
+    "sampling_random_state": 42,
+    "input": "Precomputed comparison CSV supplied through CAEE_EVALUATION_CSV.",
+    "required_columns": [
+      "question",
+      "expected_answer",
+      "parsed_answer_base",
+      "parsed_answer_4096",
+      "parsed_answer_4096x1-25",
+      "parsed_answer_4096x1-50",
+      "parsed_answer_4096x1-75"
+    ],
+    "answer_generation_base_model": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "answer_generation_model_mapping": "Four caller-supplied fine-tuned model locations mapped to the documented suffixes by the inference notebook.",
+    "test_split_origin": "Inference loads the pre-existing test partition and selects its first 1024 rows; the split-creation method and seed are unrecovered.",
+    "declared_requirements": "requirements/declared_evaluation_gpt.txt",
+    "execution_status": "Full notebook not executed during preparation.",
+    "judge_model": "gpt-3.5-turbo-0125",
+    "judge_is_not_the_answer_generation_baseline": true,
+    "runs": 5,
+    "explicit_generation_seed": null,
+    "explicit_temperature": null,
+    "maximum_new_tokens": 128,
+    "score_dimensions": [
+      "coherence",
+      "consistency",
+      "fluency",
+      "relevance"
+    ],
+    "requested_rating_range": [
+      1,
+      5
+    ],
+    "original_parser": "Case-sensitive ordered regex; integer ratings are not range-validated.",
+    "original_aggregation": "Initialize to zero, add each parsed rating divided by five, then average rows.",
+    "parse_failure_behavior": "Unparsed runs contribute zero to a fixed five-run denominator.",
+    "explicit_chain_of_thought_steps": false,
+    "probability_weighted_rating_aggregation": false,
+    "prompt_file": "prompts/geval_scoring_rubric.txt",
+    "endpoint": "Chat Completions",
+    "parse_attempts_per_run": 3,
+    "input_message_template": "Question: {question}\nExpected Answer: {expected_answer}\nGenerated Answer: {generated_answer}",
+    "external_service_opt_in": "CAEE_ALLOW_EXTERNAL_EVALUATION=1 is required in the release copy.",
+    "supplied_comparison_rows": 1024
+  }
+]

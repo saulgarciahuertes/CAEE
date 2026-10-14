@@ -1,0 +1,25 @@
+{
+  "baseline_model": "meta-llama/Meta-Llama-3-8B-Instruct",
+  "dataset_location_input": "CAEE_DATASET_REPO",
+  "fine_tuned_location_mapping_input": "CAEE_FINETUNED_MODELS",
+  "suffix_order": [
+    "base",
+    "4096",
+    "4096x1-25",
+    "4096x1-50",
+    "4096x1-75"
+  ],
+  "dataset_partition": "test",
+  "selected_rows": 1024,
+  "selection": "first rows, without shuffling in the inference notebook",
+  "batch_size": 8,
+  "max_new_tokens": 256,
+  "quantization": "8-bit",
+  "pipeline_model_dtype": "torch.bfloat16",
+  "temperature_explicitly_set": false,
+  "generation_seed_explicitly_set": false,
+  "return_full_text_explicitly_set": false,
+  "input_formatting": "Original plain system/user/assistant labels; not replaced with a new model chat template.",
+  "answer_parsing": "Original prompt replacement and first-curly-brace extraction.",
+  "original_private_locations_removed": true
+}
