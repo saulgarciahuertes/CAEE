@@ -11,7 +11,7 @@ authors:
   - family-names: "Bragos"
     given-names: "Ramon"
     orcid: "https://orcid.org/0000-0002-1373-1588"
-abstract: "Cleaned training, inference, and scoring code supporting the manuscript Assessing Alumni Entrepreneurship and Innovation Trajectories through Large Language Models. Participant data and model weights are excluded."
+abstract: "Cleaned preparation, augmentation, training, inference, and scoring code supporting the manuscript Assessing Alumni Entrepreneurship and Innovation Trajectories through Large Language Models. Participant data and model weights are excluded."
 keywords:
   - engineering education
   - alumni outcomes

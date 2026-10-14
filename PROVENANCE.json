@@ -161,6 +161,55 @@
         "Retained baseline identifier, test-prefix selection, generation settings, input formatting, answer parsing, and comparison-column ordering."
       ],
       "execution_status": "Not executed on a GPU during repository preparation."
+    },
+    {
+      "group": "preparation",
+      "source_notebook": "emnlp.ipynb",
+      "source_sha256": "88a58dd1a5ea78504579304b88e0c9d57a1766153efef68023f80633b6a39ad2",
+      "release_notebook": "notebooks/preparation/Preparation_Augmentation_ORPO.ipynb",
+      "included_source_cells_one_based": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "excluded_source_cells_one_based": [
+        1,
+        2,
+        3,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26
+      ],
+      "original_output_objects_excluded": 141,
+      "original_included_cells_output_objects": 0,
+      "changes": [
+        "Kept only preparation cells 4-9; excluded setup authentication, prototype Hub conversion, training, and older evaluation.",
+        "Removed all saved outputs and original metadata; no study records, CVs, or model weights are included.",
+        "Parameterized local input/output paths; removed Google Drive mounting, secret access, external logging, and automatic publication.",
+        "Removed record/CV/entity diagnostics and replaced missing-CV identifier displays with an aggregate counter.",
+        "Added external API opt-in, reviewed-input acknowledgment, environment API authentication, and positional-schema guards as release-only safeguards.",
+        "Retained core narrative and contrast request functions/prompts, field slices, combinatorial construction, and both alternative cleanup paths.",
+        "Retained legacy message serialization, case sensitivity, unused Yes-to-No helper, and placeholder mismatch; documented their limitations.",
+        "Extracted generic prompts/settings and the preparation subset of original declared dependencies."
+      ],
+      "execution_status": "Not executed on study data; isolated functions tested offline using synthetic records and stubbed clients only."
     }
   ]
 }
