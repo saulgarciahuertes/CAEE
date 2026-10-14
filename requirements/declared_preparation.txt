@@ -1,0 +1,8 @@
+# Preparation-only subset of the source installation declarations; not a lockfile.
+openai
+pandas==2.1.4
+pymupdf
+presidio-analyzer
+presidio-anonymizer
+pandas
+tqdm
