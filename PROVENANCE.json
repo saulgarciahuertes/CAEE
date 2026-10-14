@@ -1,0 +1,166 @@
+{
+  "prepared_date": "2026-10-14",
+  "scope": "Code, generic prompt templates, configuration, and documentation only; no study input/output records or model weights.",
+  "scientific_execution": "No training, inference, or live scoring was performed during preparation.",
+  "notebooks": [
+    {
+      "source_notebook": "JP1_ORPO_Training_4096.ipynb",
+      "source_sha256": "f608ab6fc6de31afbacf65144b82fe2c8d8d568506edacc1077ccc3e5d453b87",
+      "release_notebook": "notebooks/training/ORPO_Training_4096.ipynb",
+      "original_code_cells": 7,
+      "original_output_objects_removed": 48,
+      "original_notebook_metadata_removed": [
+        "accelerator",
+        "colab",
+        "kernelspec",
+        "language_info",
+        "widgets"
+      ],
+      "changes": [
+        "Removed Drive mounting, Colab secret access, and W&B login; optional HF_TOKEN environment authentication is used.",
+        "Replaced the private dataset repository identifier with a required environment input.",
+        "Replaced printing of a participant-level example with aggregate row counts.",
+        "Disabled external experiment logging by default.",
+        "Replaced automatic Hub uploads with local saves of the merged model and tokenizer.",
+        "Updated documentation links and corrected a misleading model-name comment; scientific function bodies are unchanged.",
+        "Added an early dataset-location check before model loading to fail without downloading weights when required private input is missing."
+      ],
+      "execution_status": "Not executed during release preparation."
+    },
+    {
+      "source_notebook": "JP1_ORPO_Training_4096x1_25.ipynb",
+      "source_sha256": "d247686980867fa02f9af07c34ecbdbb63e075780cef21ccbd376814df4e2de6",
+      "release_notebook": "notebooks/training/ORPO_Training_5120.ipynb",
+      "original_code_cells": 7,
+      "original_output_objects_removed": 46,
+      "original_notebook_metadata_removed": [
+        "accelerator",
+        "colab",
+        "kernelspec",
+        "language_info",
+        "widgets"
+      ],
+      "changes": [
+        "Removed Drive mounting, Colab secret access, and W&B login; optional HF_TOKEN environment authentication is used.",
+        "Replaced the private dataset repository identifier with a required environment input.",
+        "Replaced printing of a participant-level example with aggregate row counts.",
+        "Disabled external experiment logging by default.",
+        "Replaced automatic Hub uploads with local saves of the merged model and tokenizer.",
+        "Updated documentation links and corrected a misleading model-name comment; scientific function bodies are unchanged.",
+        "Added an early dataset-location check before model loading to fail without downloading weights when required private input is missing."
+      ],
+      "execution_status": "Not executed during release preparation."
+    },
+    {
+      "source_notebook": "JP1_ORPO_Training_4096x1_5.ipynb",
+      "source_sha256": "c68c5b29c0c51d7a72d4f212fe8b8eb159314abe3d1954b105ce1f483b3e25f8",
+      "release_notebook": "notebooks/training/ORPO_Training_6144.ipynb",
+      "original_code_cells": 7,
+      "original_output_objects_removed": 37,
+      "original_notebook_metadata_removed": [
+        "accelerator",
+        "colab",
+        "kernelspec",
+        "language_info",
+        "widgets"
+      ],
+      "changes": [
+        "Removed Drive mounting, Colab secret access, and W&B login; optional HF_TOKEN environment authentication is used.",
+        "Replaced the private dataset repository identifier with a required environment input.",
+        "Replaced printing of a participant-level example with aggregate row counts.",
+        "Disabled external experiment logging by default.",
+        "Replaced automatic Hub uploads with local saves of the merged model and tokenizer.",
+        "Updated documentation links and corrected a misleading model-name comment; scientific function bodies are unchanged.",
+        "Added an early dataset-location check before model loading to fail without downloading weights when required private input is missing."
+      ],
+      "execution_status": "Not executed during release preparation."
+    },
+    {
+      "source_notebook": "JP1_ORPO_Training_4096x1_75.ipynb",
+      "source_sha256": "620211a05750c0cddd0dd175e639dae44cb2f40f19b20d56b71d2bc13684a179",
+      "release_notebook": "notebooks/training/ORPO_Training_7168.ipynb",
+      "original_code_cells": 7,
+      "original_output_objects_removed": 46,
+      "original_notebook_metadata_removed": [
+        "accelerator",
+        "colab",
+        "kernelspec",
+        "language_info",
+        "widgets"
+      ],
+      "changes": [
+        "Removed Drive mounting, Colab secret access, and W&B login; optional HF_TOKEN environment authentication is used.",
+        "Replaced the private dataset repository identifier with a required environment input.",
+        "Replaced printing of a participant-level example with aggregate row counts.",
+        "Disabled external experiment logging by default.",
+        "Replaced automatic Hub uploads with local saves of the merged model and tokenizer.",
+        "Updated documentation links and corrected a misleading model-name comment; scientific function bodies are unchanged.",
+        "Added an early dataset-location check before model loading to fail without downloading weights when required private input is missing."
+      ],
+      "execution_status": "Not executed during release preparation."
+    },
+    {
+      "group": "evaluation",
+      "source_notebook": "JP1_Model_Evaluation_N_models_G_Eval_OAI.ipynb",
+      "source_sha256": "6047bdccac99f00978e1fd7804bc6a8d6976674b387dc7ed5996ab1009e0cbd5",
+      "release_notebook": "notebooks/evaluation/Evaluation_GEval_GPT_256.ipynb",
+      "original_code_cells": 2,
+      "original_output_objects_removed": 52,
+      "original_notebook_metadata_removed": [
+        "colab",
+        "kernelspec",
+        "language_info"
+      ],
+      "changes": [
+        "Removed stored outputs, execution counts, cell metadata, and widget/Colab metadata.",
+        "Replaced the inaccurate notebook training description with an evaluation-copy notice.",
+        "Replaced the private input/output Drive paths with a required local input and configurable local output folder.",
+        "Removed Drive mounting and Colab secret access; optional HF_TOKEN environment authentication is used.",
+        "Retained scoring functions, sampling settings, model identifiers, prompts, and original averaging behavior unchanged.",
+        "Added explicit opt-in for external API evaluation and environment-based OPENAI_API_KEY authentication.",
+        "Updated documentation links and corrected a misleading model-name comment; scientific function bodies are unchanged."
+      ],
+      "execution_status": "No full notebook execution; only selected scoring functions tested with synthetic inputs and stubbed responses."
+    },
+    {
+      "group": "evaluation",
+      "source_notebook": "JP1_Model_Evaluation_N_models_SemScore.ipynb",
+      "source_sha256": "57bf62de314941a885614745212e6109ada576cfdd2f49f4f051e331f622f834",
+      "release_notebook": "notebooks/evaluation/Evaluation_SemScore_256.ipynb",
+      "original_code_cells": 2,
+      "original_output_objects_removed": 14,
+      "original_notebook_metadata_removed": [
+        "colab",
+        "kernelspec",
+        "language_info",
+        "accelerator",
+        "widgets"
+      ],
+      "changes": [
+        "Removed stored outputs, execution counts, cell metadata, and widget/Colab metadata.",
+        "Replaced the inaccurate notebook training description with an evaluation-copy notice.",
+        "Replaced the private input/output Drive paths with a required local input and configurable local output folder.",
+        "Removed Drive mounting and Colab secret access; optional HF_TOKEN environment authentication is used.",
+        "Retained scoring functions, sampling settings, model identifiers, prompts, and original averaging behavior unchanged.",
+        "Updated documentation links and corrected a misleading model-name comment; scientific function bodies are unchanged."
+      ],
+      "execution_status": "No full notebook execution; only selected scoring functions tested with synthetic inputs and stubbed responses."
+    },
+    {
+      "group": "inference",
+      "source_notebook": "JP1_Model_Inference_N_models.ipynb",
+      "source_sha256": "c73274083b497f37d4f64b53c9dd30a1503a2539f9c457eff7766c8278d5bb32",
+      "release_notebook": "notebooks/inference/Inference_Comparison_1024.ipynb",
+      "original_output_objects_removed": 81,
+      "changes": [
+        "Removed stored outputs, execution counts, widget/Colab metadata, and Drive mounting.",
+        "Replaced private dataset and four fine-tuned model identifiers with validated environment inputs.",
+        "Replaced Colab secret access with optional environment-based authentication.",
+        "Replaced private Drive output paths with configurable local paths.",
+        "Replaced display of participant records with aggregate output dimensions.",
+        "Retained baseline identifier, test-prefix selection, generation settings, input formatting, answer parsing, and comparison-column ordering."
+      ],
+      "execution_status": "Not executed on a GPU during repository preparation."
+    }
+  ]
+}

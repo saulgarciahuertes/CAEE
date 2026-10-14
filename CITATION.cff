@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "Please cite the associated manuscript when referring to this study code."
+title: "Alumni Entrepreneurship and Innovation: LLM Study Code"
+type: software
+repository-code: "https://github.com/saulgarciahuertes/CAEE"
+license: MIT
+authors:
+  - family-names: "Garcia-Huertes"
+    given-names: "Saul"
+    orcid: "https://orcid.org/0000-0002-6735-3025"
+  - family-names: "Bragos"
+    given-names: "Ramon"
+    orcid: "https://orcid.org/0000-0002-1373-1588"
+abstract: "Cleaned training, inference, and scoring code supporting the manuscript Assessing Alumni Entrepreneurship and Innovation Trajectories through Large Language Models. Participant data and model weights are excluded."
+keywords:
+  - engineering education
+  - alumni outcomes
+  - large language models
+  - preference optimization
