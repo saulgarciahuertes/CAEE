@@ -2,9 +2,23 @@
 
 ## What Is Included
 
-Four ORPO training implementations, baseline/fine-tuned answer generation, direct GPT ratings, semantic-similarity scoring, generic prompt templates, extracted settings, and the dependencies declared by the original notebooks. The unfinished Llama judge experiment and unrelated sentiment/binary-classification experiments are excluded because they do not support the manuscript's reported comparison.
+The recovered preparation/augmentation implementation, four ORPO training implementations, baseline/fine-tuned answer generation, direct GPT ratings, semantic-similarity scoring, generic prompt templates, extracted settings, and the dependencies declared by the original notebooks. The unfinished Llama judge experiment and unrelated sentiment/binary-classification experiments are excluded because they do not support the manuscript's reported comparison.
 
 No raw survey records, participant-level derived datasets, generated answers, scored records, CVs, private dataset/model addresses, secrets, or weights are included. Code availability is not a claim that the full study can be reproduced from public inputs alone.
+
+## Recovered Preparation Source
+
+`notebooks/preparation/Preparation_Augmentation_ORPO.ipynb` retains preparation cells 4-9 from `emnlp.ipynb`. It excludes original authentication/setup, prototype Hugging Face conversion/publication, training, and older two-model evaluation. All 141 saved output objects and original metadata are excluded from this source-only release; the retained preparation cells themselves had no saved outputs. Cleared execution counts and incomplete saved history do not establish a complete historical execution sequence or every API payload.
+
+The written flow uses Presidio configured for English `PERSON`, `EMAIL_ADDRESS`, `PHONE_NUMBER`, and `URL` detection on CV text, followed by case-sensitive literal name-part replacement. Survey identifier columns remain in the private master file but are excluded from the narrative field slices. Selected survey values may still contain identifying information. The instruction to omit institution/company names constrains generated output, not the request. Code and schema guards are not an anonymity certificate or evidence of institutional processing permission.
+
+Narrative generation uses `gpt-3.5-turbo-0125`, three variants for each of six groups, and a 500-token output limit. Exact generic instructions are in `prompts/preparation_prompts.json`. Three CV variants x nine contextual variants x three answer variants x two fixed tasks yield 162 instruction rows per respondent. This accounts for 16,362 rows for the 101-record cohort, not 16,362 independent respondents. Locally comparing the private saved artifacts reproduced this entire prompt/question/answer multiset without new generation; no participant values are included in the repository.
+
+Contrasting answers use the historical `gpt-3.5-turbo` alias, temperature 0.8, and a 500-token limit. Its resolved historical snapshot is not recorded. The Yes-to-No helper is retained but unused, and does not implement the reverse replacement.
+
+The two later cleanup alternatives independently reread `orpo_data.csv`. Alternative B does not clean alternative A's output. Both use regex name replacement after generation in the written flow. Accent-normalization order, case sensitivity, placeholder spelling, and manual message-string serialization are preserved. In particular, `<PHONE NUMBER>` differs from Presidio's `<PHONE_NUMBER>`, and the source's unescaped message strings are not guaranteed valid JSON. The resulting CSVs are archival intermediates, not certified reusable training inputs. No missing split or conversion routine has been invented.
+
+The release changes paths to environment-configured private locations and removes record/entity/CV diagnostics. It adds schema checks and explicit API/input-review opt-ins, which are release-only safeguards. The unchanged core functions and prompts are covered by offline synthetic checks. The selected historical dependency declarations do not specify a compatible English NLP model or a complete environment lock; Presidio model/resource compatibility and full pipeline execution have not been tested during release preparation.
 
 ## Data Partitions And Selection
 
