@@ -36,15 +36,28 @@ class ReleaseChecks(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.notebooks = sorted((ROOT / "notebooks").rglob("*.ipynb"))
-        cls.gpt_source = notebook_code(ROOT / "notebooks/evaluation/Evaluation_GEval_GPT_256.ipynb")
-        cls.inference_source = notebook_code(ROOT / "notebooks/inference/Inference_Comparison_1024.ipynb")
-        preparation = json.loads((ROOT / "notebooks/preparation/Preparation_Augmentation_ORPO.ipynb").read_text())
+        cls.gpt_source = notebook_code(ROOT / "notebooks/evaluation/Evaluate_Answer_Quality_with_GPT_256_Samples.ipynb")
+        cls.inference_source = notebook_code(ROOT / "notebooks/inference/Generate_Base_and_Fine_Tuned_Llama_3_Answers_1024_Test_Rows.ipynb")
+        preparation = json.loads((ROOT / "notebooks/preparation/Redact_CVs_Augment_Survey_Data_and_Build_ORPO_Dataset.ipynb").read_text())
         cls.preparation_cells = ["".join(cell["source"]) for cell in preparation["cells"] if cell["cell_type"] == "code"]
 
     def test_expected_notebook_scope(self):
         self.assertEqual(len(self.notebooks), 8)
         self.assertEqual(len(list((ROOT / "notebooks/training").glob("*.ipynb"))), 4)
         self.assertFalse((ROOT / "notebooks/experimental").exists())
+
+    def test_notebook_names_and_guide(self):
+        guide = (ROOT / "docs/NOTEBOOK_GUIDE.md").read_text()
+        for path in self.notebooks:
+            self.assertTrue(path.name.startswith(("Redact_CVs_", "Fine_Tune_Llama_3_8B_",
+                                                 "Generate_Base_and_Fine_Tuned_", "Evaluate_")))
+            self.assertIn(path.name, guide)
+
+    def test_provenance_release_paths_match_notebooks(self):
+        provenance = json.loads((ROOT / "PROVENANCE.json").read_text())
+        recorded = {entry["release_notebook"] for entry in provenance["notebooks"]}
+        actual = {str(path.relative_to(ROOT)) for path in self.notebooks}
+        self.assertEqual(recorded, actual)
 
     def test_notebooks_have_no_outputs_or_private_metadata(self):
         for path in self.notebooks:
@@ -93,7 +106,7 @@ class ReleaseChecks(unittest.TestCase):
 
     def test_training_sizes_and_internal_split(self):
         for rows in [4096, 5120, 6144, 7168]:
-            source = notebook_code(ROOT / f"notebooks/training/ORPO_Training_{rows}.ipynb")
+            source = notebook_code(ROOT / f"notebooks/training/Fine_Tune_Llama_3_8B_with_ORPO_{rows}_Selected_Rows.ipynb")
             self.assertIn(f".select(range({rows}))", source)
             self.assertIn("train_test_split(test_size=0.01)", source)
             self.assertIn('base_model = "meta-llama/Meta-Llama-3-8B-Instruct"', source)
@@ -117,7 +130,7 @@ class ReleaseChecks(unittest.TestCase):
         self.assertIn('os.environ.get("CAEE_FINETUNED_MODELS")', self.inference_source)
 
     def test_scorers_retain_same_sampling(self):
-        for filename in ["Evaluation_GEval_GPT_256.ipynb", "Evaluation_SemScore_256.ipynb"]:
+        for filename in ["Evaluate_Answer_Quality_with_GPT_256_Samples.ipynb", "Evaluate_Semantic_Similarity_with_SemScore_256_Samples.ipynb"]:
             source = notebook_code(ROOT / "notebooks/evaluation" / filename)
             self.assertIn("num_rows_selected = 256", source)
             self.assertIn(".sample(num_rows_selected, random_state=42)", source)
