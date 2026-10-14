@@ -1,0 +1,10 @@
+# Declared in the historical source; not a complete environment lock.
+pandas==2.2.2
+transformers
+datasets
+accelerate
+trl
+bitsandbytes
+tqdm
+huggingface_hub
+pyarrow==16.1.0

@@ -1,0 +1,15 @@
+# Declared in the source notebook; unpinned dependencies are not a historical environment lock.
+pandas==2.1.4
+transformers
+datasets
+accelerate
+peft
+trl
+bitsandbytes
+wandb
+tqdm
+huggingface_hub
+requests==2.31.0
+fsspec==2024.3.1
+gcsfs==2024.3.1
+pyarrow==16.0.0
