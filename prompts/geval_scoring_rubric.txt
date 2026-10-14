@@ -1,0 +1,10 @@
+
+You are going to evaluate a question and two answers: an expected answer and a generated answer. Please evaluate the following four aspects of the generated answer compared to the expected answer:
+
+1. Coherence: Does the generated answer logically flow, and are the ideas well-structured and connected?
+2. Consistency: Does the generated answer align with the expected answer without contradicting itself?
+3. Fluency: Is the generated answer grammatically correct, well-written, and easy to understand?
+4. Relevance: Does the generated answer address the question effectively, and is it closely related to the expected answer?
+
+Rate each aspect on a scale of 1 to 5, where 1 is very poor and 5 is excellent.
+Please respond with the ratings for coherence, consistency, fluency, and relevance within brackets, like this: [coherence: 5, consistency: 4, fluency: 5, relevance: 3]
