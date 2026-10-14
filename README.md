@@ -6,13 +6,15 @@ This repository contains cleaned copies of the supplied preparation, augmentatio
 
 ## Workflow
 
+[Notebook guide](docs/NOTEBOOK_GUIDE.md)
+
 | Stage | Notebook | Inputs |
 |---|---|---|
-| Preparation and augmentation | [CV redaction, narratives, and preference construction](notebooks/preparation/Preparation_Augmentation_ORPO.ipynb) | Authorized private survey/CVs; separately reviewed inputs and explicit API opt-in for generation |
-| ORPO training | [4,096 selected rows](notebooks/training/ORPO_Training_4096.ipynb), [5,120](notebooks/training/ORPO_Training_5120.ipynb), [6,144](notebooks/training/ORPO_Training_6144.ipynb), [7,168](notebooks/training/ORPO_Training_7168.ipynb) | Authorized preference dataset and base-model access |
-| Answer generation | [Inference comparison](notebooks/inference/Inference_Comparison_1024.ipynb) | Existing test partition and four fine-tuned model locations |
-| Direct-rating evaluation | [GPT scorer](notebooks/evaluation/Evaluation_GEval_GPT_256.ipynb) | Authorized local comparison CSV and explicitly enabled API access |
-| Semantic similarity | [SemScore scorer](notebooks/evaluation/Evaluation_SemScore_256.ipynb) | Authorized local comparison CSV and embedding-model access |
+| Preparation and augmentation | [CV redaction, narratives, and preference construction](notebooks/preparation/Redact_CVs_Augment_Survey_Data_and_Build_ORPO_Dataset.ipynb) | Authorized private survey/CVs; separately reviewed inputs and explicit API opt-in for generation |
+| ORPO training | [4,096 selected rows](notebooks/training/Fine_Tune_Llama_3_8B_with_ORPO_4096_Selected_Rows.ipynb), [5,120](notebooks/training/Fine_Tune_Llama_3_8B_with_ORPO_5120_Selected_Rows.ipynb), [6,144](notebooks/training/Fine_Tune_Llama_3_8B_with_ORPO_6144_Selected_Rows.ipynb), [7,168](notebooks/training/Fine_Tune_Llama_3_8B_with_ORPO_7168_Selected_Rows.ipynb) | Authorized preference dataset and base-model access |
+| Answer generation | [Inference comparison](notebooks/inference/Generate_Base_and_Fine_Tuned_Llama_3_Answers_1024_Test_Rows.ipynb) | Existing test partition and four fine-tuned model locations |
+| Direct-rating evaluation | [GPT scorer](notebooks/evaluation/Evaluate_Answer_Quality_with_GPT_256_Samples.ipynb) | Authorized local comparison CSV and explicitly enabled API access |
+| Semantic similarity | [SemScore scorer](notebooks/evaluation/Evaluate_Semantic_Similarity_with_SemScore_256_Samples.ipynb) | Authorized local comparison CSV and embedding-model access |
 
 The baseline is `meta-llama/Meta-Llama-3-8B-Instruct`. Each training notebook selects its named number of rows from the existing training partition and reserves an additional 1% for internal validation. Inference selects the first 1,024 rows of the existing test partition. Both scorers sample 256 comparison rows with random state 42.
 
